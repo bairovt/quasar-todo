@@ -11,6 +11,11 @@
           aria-label="Menu"
         />
       </q-toolbar>
+      <div class="q-px-lg q-pt-xl q-mb-md">
+        <div class="text-h3">Todo</div>
+        <div class="text-subtitle1">Среда 22 января</div>
+      </div>
+      <q-img src="statics/mountains.png" class="header-image absolute-top" />
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-2">
@@ -90,3 +95,12 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.header-image {
+  height: 100%;
+  z-index: -1;
+  opacity: 0.3;
+  filter: grayscale(100%);
+}
+</style>

@@ -1,5 +1,26 @@
 <template>
   <q-page class="bg-grey-3 column">
+    <div class="row q-pa-sm bg-primary">
+      <q-input
+        v-model="newTaskTitle"
+        @keyup.enter="addTask()"
+        class="col"
+        bg-color="white"
+        square
+        filled
+        placeholder="Add task"
+        maxlength="12"
+        dense
+      >
+        <template v-slot:append>
+          <q-btn round dense flat icon="add" @click.stop="addTask()" />
+        </template>
+      </q-input>
+      <div v-if="!tasks.length" class="no-tasks absolute-center">
+        <q-icon name="check" size="100px" color="primary" />
+        <div color="primary" class="text-h5 text-primary text-center">No tasks</div>
+      </div>
+    </div>
     <q-list class="bg-white" separator bordered>
       <q-item
         v-ripple
@@ -33,26 +54,20 @@
 export default {
   data() {
     return {
-      tasks: [
-        {
-          title: "Get batanas",
-          done: false
-        },
-        {
-          title: "Eat batanas",
-          done: false
-        },
-        {
-          title: "Poo batanas",
-          done: false
-        }
-      ]
+      tasks: [],
+      newTaskTitle: ""
     };
   },
   methods: {
-    // deleteItem(idx) {
-    //   this.tasks.splice(idx, 1);
-    // },
+    addTask() {
+      this.tasks.push({ done: false, title: this.newTaskTitle });
+      this.newTaskTitle = "";
+      this.$q.notify({
+        color: "secondary",
+        message: "Task added",
+        position: "top"
+      });
+    },
     confirmDeleteItem(idx) {
       this.$q
         .dialog({
@@ -63,10 +78,13 @@ export default {
         })
         .onOk(() => {
           this.tasks.splice(idx, 1);
-          // console.log('>>>> OK')
         })
         .onOk(() => {
-          // console.log('>>>> second OK catcher')
+          this.$q.notify({
+            message: "Task deleted",
+            color: "secondary",
+            position: "top"
+          });
         })
         .onCancel(() => {
           // console.log('>>>> Cancel')
@@ -85,5 +103,8 @@ export default {
     text-decoration: line-through;
     color: gray;
   }
+}
+.no-tasks {
+  opacity: 0.5;
 }
 </style>
